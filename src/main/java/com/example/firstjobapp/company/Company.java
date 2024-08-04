@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import com.example.firstjobapp.job.Job;
+import com.example.firstjobapp.review.Review;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Company {
@@ -18,19 +20,23 @@ public class Company {
 	private String name;
 	private String description;
 
-	@OneToMany
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
 	private List<Job> jobs;
 
-	private List<Review> reviews;
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Review> review;
 
 	public Company() {
 	}
 
-	public Company(Long id, String name, String description, List<Job> jobs) {
+	public Company(Long id, String name, String description, List<Job> jobs, List<Review> review) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.jobs = jobs;
+		this.review = review;
 	}
 
 	public Long getID() {
@@ -57,29 +63,19 @@ public class Company {
 		this.description = description;
 	}
 
-	public List<Job> getJobs(){
+	public List<Job> getJobs() {
 		return jobs;
 	}
 
-	public void setJobs(List<Job> jobs){
-		int a = 1;
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
 	}
 
-	public List<Review> getReviews() {
-		return this.reviews;
+	public List<Review> getReview() {
+		return this.review;
 	}
 
-	public Boolean setReviews(long reviewId, Review updatedReview) {
-		Iterator<Review> iterator = reviews.iterator();
-		while (iterator.hasNext()) {
-			Review review = iterator.next();
-			if (review.getId().equals(reviewId)) {
-				review.setName(updatedReview.getName());
-				review.setRating(updatedReview.getRating());
-				review.setDescription(updatedReview.getDescription());
-			}
-			return true;
-		}
-		return false;
+	public void setReview(List<Review> value) {
+		this.review = value;
 	}
 }
