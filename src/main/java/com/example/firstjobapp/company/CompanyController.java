@@ -25,7 +25,7 @@ public class CompanyController {
 	@PutMapping("/{id}")
 	public ResponseEntity<String> updateCompany(@RequestBody Company company, @PathVariable long id){
 		if(companyService.updateCompany(company, id)){
-			return new ResponseEntity<>("Company updated successfully",HttpStatus.ACCEPTED);
+			return new ResponseEntity<>("Company details updated successfully",HttpStatus.ACCEPTED);
 		}
 		return ResponseEntity.status(403).body("Unable to update the Company.");
 	}
