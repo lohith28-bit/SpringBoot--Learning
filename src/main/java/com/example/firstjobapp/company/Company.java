@@ -55,7 +55,7 @@ public class Company {
 		this.name = name;
 	}
 
-	public String getDiscription() {
+	public String getDescription() {
 		return description;
 	}
 

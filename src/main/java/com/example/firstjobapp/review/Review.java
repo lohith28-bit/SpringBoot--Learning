@@ -72,5 +72,4 @@ public class Review {
 	public void setCompany(Company value) {
 		this.company = value;
 	}
-
 }
