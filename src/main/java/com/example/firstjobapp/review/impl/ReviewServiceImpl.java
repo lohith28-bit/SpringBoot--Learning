@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.firstjobapp.company.CompanyRepository;
-
+import com.example.firstjobapp.company.CompanyService;
 import com.example.firstjobapp.company.Company;
+import com.example.firstjobapp.company.CompanyController;
 import com.example.firstjobapp.review.Review;
 import com.example.firstjobapp.review.ReviewRepository;
 import com.example.firstjobapp.review.ReviewService;
@@ -16,35 +17,49 @@ import com.example.firstjobapp.review.ReviewService;
 public class ReviewServiceImpl implements ReviewService {
 
 	private ReviewRepository reviewRepository;
+	private CompanyService companyService;
 
 	@Autowired
 	private CompanyRepository companyRepository;
 
-	public ReviewServiceImpl(ReviewRepository reviewRepository) {
+	public ReviewServiceImpl(ReviewRepository reviewRepository, CompanyService companyService) {
 		this.reviewRepository = reviewRepository;
+		this.companyService = companyService;
 	}
 
 	public void addReview(Long companyId, Review review) {
-		Company company = new Company();
-		company.setID(companyId);
-		review.setCompany(company);
-		reviewRepository.save(review);
+		// Company company = new Company();
+		// company.setID(companyId);
+		// review.setCompany(company);
+		// reviewRepository.save(review);
+
+		Company company = companyService.getcompanybyId(companyId);
+		if (company != null) {
+			review.setCompany(company);
+			reviewRepository.save(review);
+		}
 	}
 
 	public List<Review> getAllReviews(Long companyId) {
-		List<Review> reviewsLoop = reviewRepository.findAll();
-		List<Review> resultReview = new ArrayList<>();
+		// List<Review> reviewsLoop = reviewRepository.findAll();
+		// List<Review> resultReview = new ArrayList<>();
 
-		reviewsLoop.forEach(r -> {
-			if (r.getCompany().getID().equals(companyId)) {
-				resultReview.add(r);
-			}
-		});
-		return resultReview;
+		// reviewsLoop.forEach(r -> {
+		// if (r.getCompany().getID().equals(companyId)) {
+		// resultReview.add(r);
+		// }
+		// });
+		// return resultReview;
+
+		return reviewRepository.findByCompanyId(companyId);
 	}
 
-	public Review getOneReview(Long reviewId) {
-		return reviewRepository.findById(reviewId).orElse(null);
+	public Review getOneReview(Long companyId, Long reviewId) {
+		Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
+		if (reviewOptional.isPresent() && (reviewOptional.get().getCompany().getID()).equals(companyId)) {
+			return reviewOptional.get();
+		}
+		return null;
 	}
 
 	public Boolean updateReviewById(Long companyId, Long reviewId, Review review) {
@@ -67,8 +82,8 @@ public class ReviewServiceImpl implements ReviewService {
 		return false;
 	}
 
-	public Boolean deleteReviewById(Long reviewId) {
-		if (reviewRepository.existsById(reviewId)) {
+	public Boolean deleteReviewById(Long companyId, Long reviewId) {
+		if (companyService.getcompanybyId(companyId) != null && reviewRepository.existsById(reviewId)) {
 			reviewRepository.deleteById(reviewId);
 			return true;
 		}

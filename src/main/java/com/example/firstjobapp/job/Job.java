@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
+
 	private Long id;
 	private String title;
 	private String description;
@@ -24,11 +24,12 @@ public class Job {
 	@ManyToOne
 	private Company company;
 
-	public Job(){
-		
+	public Job() {
+
 	}
 
-	public Job(Long id, String title, String description, String minSalary, String maxSalary, String location, Company company) {
+	public Job(Long id, String title, String description, String minSalary, String maxSalary, String location,
+			Company company) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
@@ -38,11 +39,11 @@ public class Job {
 		this.company = company;
 	}
 
-	public Company getCompany(){
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(Company company){
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 

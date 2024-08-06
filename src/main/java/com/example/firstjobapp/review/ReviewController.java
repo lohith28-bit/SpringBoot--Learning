@@ -30,7 +30,7 @@ public class ReviewController {
 			return new ResponseEntity<>(reviewService.getAllReviews(companyId), HttpStatus.ACCEPTED);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(reviewService.getAllReviews(companyId), HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping
@@ -40,8 +40,8 @@ public class ReviewController {
 	}
 
 	@GetMapping("/{reviewId}")
-	public ResponseEntity<?> getOneReview(@PathVariable long reviewId) {
-		Review review = reviewService.getOneReview(reviewId);
+	public ResponseEntity<?> getOneReview(@PathVariable long companyId, @PathVariable long reviewId) {
+		Review review = reviewService.getOneReview(companyId, reviewId);
 
 		if (review != null) {
 			return new ResponseEntity<>(review, HttpStatus.OK);
@@ -60,8 +60,8 @@ public class ReviewController {
 	}
 
 	@DeleteMapping("/{reviewId}")
-	public ResponseEntity<String> deleteReviewById(@PathVariable long reviewId) {
-		if (Boolean.TRUE.equals(reviewService.deleteReviewById(reviewId))) {
+	public ResponseEntity<String> deleteReviewById(@PathVariable long companyId, @PathVariable long reviewId) {
+		if (Boolean.TRUE.equals(reviewService.deleteReviewById(companyId, reviewId))) {
 			return new ResponseEntity<>("Review Deleted successfully", HttpStatus.ACCEPTED);
 		}
 		return new ResponseEntity<>("Review Deleted successfully", HttpStatus.NOT_FOUND);
