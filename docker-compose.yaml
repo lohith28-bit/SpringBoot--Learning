@@ -29,6 +29,21 @@ services:
       - PGADMIN_CONFIG_SERVER_MODE=False
     restart: unless-stopped
 
+  jobapp:
+    container_name: Springboot_jobapp_container
+    image: itslohith/jobappimage
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres
+    environment:
+      - spring.datasource.url=jdbc:postgresql://Postgres_container:5432/jobapp
+      - spring.datasource.username=postgres1
+      - spring.datasource.password=secretpostgres1
+    depends_on:
+      - Postgress
+    restart: unless-stopped
+
 networks:
   postgres:
     driver: bridge
